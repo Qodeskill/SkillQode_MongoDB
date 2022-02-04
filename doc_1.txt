@@ -73,7 +73,7 @@ use admin()
 
 How to create collection:
 -------------------------
- db.createCollection("employees")
+ db.crs
 { "ok" : 1 }
 > show collections
 employees
@@ -102,52 +102,55 @@ collection
 db.collection.findOne() --->To get one document
 eg: db.employees.find()
 > db.employees.find()
-{ "_id" : ObjectId("5fe16d547789dad6d1278927"), "eno" : 100, "ename"
-: "Sunny", "esal" : 1000, "eaddr" : "Hyd" }
-{ "_id" : ObjectId("5fe16da07789dad6d1278928"), "eno" : 200, "ename"
-: "Bunny", "esal" : 2000, "eaddr" : "Mumbai" }
-{ "_id" : ObjectId("5fe16dc67789dad6d1278929"), "eno" : 300, "ename"
-: "Chinny", "esal" : 3000, "eaddr" : "Chennai" }
-{ "_id" : ObjectId("5fe16ddb7789dad6d127892a"), "eno" : 400, "ename"
-: "Vinny", "esal" : 4000, "eaddr" : "Delhi" }
 
 > db.employees.find().pretty()
-{
- "_id" : ObjectId("5fe16d547789dad6d1278927"),
- "eno" : 100,
- "ename" : "Sunny",
- "esal" : 1000,
- "eaddr" : "Hyd"
-}
-{
- "_id" : ObjectId("5fe16da07789dad6d1278928"),
- "eno" : 200,
- "ename" : "Bunny",
- "esal" : 2000,
- "eaddr" : "Mumbai"
-}
-{
- "_id" : ObjectId("5fe16dc67789dad6d1278929"),
- "eno" : 300,
- "ename" : "Chinny",
- "esal" : 3000,
- "eaddr" : "Chennai"
-}
-{
- "_id" : ObjectId("5fe16ddb7789dad6d127892a"),
- "eno" : 400,
- "ename" : "Vinny",
-20
- "esal" : 4000,
- "eaddr" : "Delhi"
-}
+
 3. U-->Update Operation:
 ------------------------
 db.collection.updateOne()
 db.collection.updateMany()
 db.collection.replaceOne()
+
+-->How to drop collection?
+db.collection.drop()
+db.students.drop()
+
+db.dropDatabase()
+current database will be deleted.
+
+
 Update Vinny salary as 10000
 db.collection.updateOne()
 db.employees.updateOne({ename: "Vinny"},{esal:10000})
+db.employees.updateOne({ename: "Vinny"},{$set: {esal:10000}})
+
 if esal field is available then old value will be replaced with 10000.
 If the field is not already available then it will be created.
+
+db.employees.deleteOne({ename:"Vinny"})
+
+
+var emp = {};
+emp.eno = 7777;
+emp.ename = "Bunny";
+emp.esal = 777777;
+emp.eaddr = "Hyderabad";
+db.employees.insertOne(emp)
+db.employees.insertMany([emp])
+db.employees.insert(emp)
+db.employees.insert([emp])
+
+
+db.employees.insert({_id: "AAA-BBB", name: "Durga"})
+db.employees.insertOne({_id: "AAA-BBB", name: "Ravi"})
+
+
+To generate timestamp from ObjectId:
+------------------------------------
+db.employees.find() --->List out all documents of employees collection
+db.employees.find()[0] --->List out only first document of employees
+collection
+db.employees.find()[0]._id --->ObjectId of first document
+db.employees.find()[0]._id.getTimestamp() --->ObjectId of first
+document
+
